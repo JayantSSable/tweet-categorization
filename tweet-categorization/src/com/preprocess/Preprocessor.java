@@ -13,7 +13,8 @@ public class Preprocessor {
 	public Map <String , Integer> tweetPolitcs = new HashMap <String , Integer>();
 	public Map <String , Integer> tweetSports = new HashMap <String , Integer>();
 	public Map <String , Integer> tweetTechnology = new HashMap <String , Integer>();
-	
+	public Map <String , Integer> stopword = new HashMap <String , Integer>();
+	//public Map <String , Integer> alphaNumeral = new HashMap <String , Integer>();
 	/*
 	 * 
 	 * Removes links, url's etc.
@@ -85,13 +86,22 @@ public class Preprocessor {
 	
 	/*
 	 * 
-	 * Removing re-tweet.
+	 * Removing stopwords.
 	 */
 	
-	public String removeReTweet(String val)
+	public String removeStopwords(String val)
 	{
 		String res = new String("");
-			
+		StringTokenizer token = new StringTokenizer(val);
+		while(token.hasMoreElements())
+		{
+			String str = (String) token.nextElement();
+			if(!(stopword.containsKey(str)))
+			{
+				res = res + str + " ";
+			}
+				
+		}
 		return res;
 	}
 	
@@ -137,20 +147,53 @@ public class Preprocessor {
 		return result;
 	}
 	
+	/*
+	 * 
+	 * maintaining alpha numerals.
+	 */
+	public String removeExtra(String val)
+	{
+		String res = new String("");
+		for(int i=0;i<val.length();i++)
+		{
+			char ch = val.charAt(i);
+			int c = (int) ch;
+			if((c>=65 && c<=90) || (c>=97 && c<=122) || (c==32))
+				res = res + ch;
+		}
+		return res;
+	}
+	
 	public static void main(String [] args) throws Exception
 	{
 		File file = new File("training.txt");
 		if (!file.exists()) {
 			file.createNewFile();
 		}
+		
+		/*
+		 * Stopword Preprocessing
+		 */
+		
+		Preprocessor p = new Preprocessor();
+		File stop = new File("stop.txt");
+		FileReader st = new FileReader(stop);
+		BufferedReader br1 = new BufferedReader(st);
+		String word;
+		while((word = br1.readLine()) != null)
+		{
+			p.stopword.put(word, 1);
+		}
+		br1.close();
+		
 		/*
 		 * 
 		 * Politics Preprocessing
 		 */
+		
 		FileWriter fw = new FileWriter(file.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(fw);
 		int tweetCountPolitics = 0;
-		Preprocessor p = new Preprocessor();
 		FileReader politics = new FileReader("politics.txt");
 		BufferedReader br = new BufferedReader(politics);
 		String line;
@@ -161,6 +204,8 @@ public class Preprocessor {
 			line = p.removeLinks(line);
 			line = p.removeHash(line);
 			line = p.removeEmoticons(line);
+			line = p.removeStopwords(line);
+			line = p.removeExtra(line);
 			if(!line.startsWith("RT"))
 			{
 				p.tweetPolitcs.put(line,1);
@@ -196,6 +241,8 @@ public class Preprocessor {
 			line = p.removeLinks(line);
 			line = p.removeHash(line);
 			line = p.removeEmoticons(line);
+			line = p.removeStopwords(line);
+			line = p.removeExtra(line);
 			if(!line.startsWith("RT"))
 			{
 				p.tweetSports.put(line,1);
@@ -234,6 +281,8 @@ public class Preprocessor {
 			line = p.removeLinks(line);
 			line = p.removeHash(line);
 			line = p.removeEmoticons(line);
+			line = p.removeStopwords(line);
+			line = p.removeExtra(line);
 			if(!line.startsWith("RT"))
 			{
 				p.tweetTechnology.put(line,1);
