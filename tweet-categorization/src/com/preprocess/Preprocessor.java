@@ -1,13 +1,18 @@
 package com.preprocess;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Preprocessor {
 	
-	public Map <String , Integer> tweet = new HashMap <String , Integer>();
+	public Map <String , Integer> tweetPolitcs = new HashMap <String , Integer>();
+	public Map <String , Integer> tweetSports = new HashMap <String , Integer>();
+	public Map <String , Integer> tweetTechnology = new HashMap <String , Integer>();
 	
 	/*
 	 * 
@@ -134,21 +139,31 @@ public class Preprocessor {
 	
 	public static void main(String [] args) throws Exception
 	{
-		int tweetCount = 0;
+		File file = new File("training.txt");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		/*
+		 * 
+		 * Politics Preprocessing
+		 */
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		int tweetCountPolitics = 0;
 		Preprocessor p = new Preprocessor();
 		FileReader politics = new FileReader("politics.txt");
 		BufferedReader br = new BufferedReader(politics);
 		String line;
 		while((line = br.readLine()) != null)
 		{
-			tweetCount += 1;
+			tweetCountPolitics += 1;
 			line = p.removeUsername(line);
 			line = p.removeLinks(line);
 			line = p.removeHash(line);
 			line = p.removeEmoticons(line);
 			if(!line.startsWith("RT"))
 			{
-				p.tweet.put(line,1);
+				p.tweetPolitcs.put(line,1);
 			}
 			
 		/* System.out.println(line);
@@ -158,12 +173,93 @@ public class Preprocessor {
 			
 		}
 		System.out.println("*****************************************************************************************");
-		for(String key : p.tweet.keySet())
+		for(String key : p.tweetPolitcs.keySet())
 		{
-			System.out.println(key);
+			String str = "politics\t"+key+"\n";
+			bw.write(str);
+			System.out.println("politics"+"\t"+key);
 		}
-		System.out.println("************************************************************************************");
-		System.out.println("TweetCount: "+tweetCount+" Hashcount: "+p.tweet.size());
+		System.out.println("*****************************************************************************************");
+		
 		br.close();
+		/*
+		 * 
+		 * Sports Preprocessing
+		 */
+		int tweetCountSports = 0;
+		FileReader sports = new FileReader("sports.txt");
+		br = new BufferedReader(sports);
+		while((line = br.readLine()) != null)
+		{
+			tweetCountSports += 1;
+			line = p.removeUsername(line);
+			line = p.removeLinks(line);
+			line = p.removeHash(line);
+			line = p.removeEmoticons(line);
+			if(!line.startsWith("RT"))
+			{
+				p.tweetSports.put(line,1);
+			}
+			
+		/* System.out.println(line);
+		 *	
+		 * System.out.println(line+"\n");
+		 */
+			
+		}
+		System.out.println("*****************************************************************************************");
+		for(String key : p.tweetSports.keySet())
+		{
+			String str = "sports\t\t"+key+"\n";
+			bw.write(str);
+			System.out.println("sports"+"\t\t"+key);
+		}
+		System.out.println("*****************************************************************************************");
+		
+		br.close();
+		
+		/*
+		 * 
+		 * 
+		 * Technology Preprocessing
+		 */
+		
+		int tweetCountTechnology = 0;
+		FileReader technology = new FileReader("technology.txt");
+		br = new BufferedReader(technology);
+		while((line = br.readLine()) != null)
+		{
+			tweetCountTechnology += 1;
+			line = p.removeUsername(line);
+			line = p.removeLinks(line);
+			line = p.removeHash(line);
+			line = p.removeEmoticons(line);
+			if(!line.startsWith("RT"))
+			{
+				p.tweetTechnology.put(line,1);
+			}
+			
+		/* System.out.println(line);
+		 *	
+		 * System.out.println(line+"\n");
+		 */
+			
+		}
+		System.out.println("*****************************************************************************************");
+		for(String key : p.tweetTechnology.keySet())
+		{
+			String str = "technology\t"+key+"\n";
+			bw.write(str);
+			System.out.println("technology"+"\t"+key);
+		}
+		System.out.println("*****************************************************************************************");
+		
+		System.out.println("Politics TweetCount: "+tweetCountPolitics+" Hashcount: "+p.tweetPolitcs.size());
+		System.out.println("Sports TweetCount: "+tweetCountTechnology+" Hashcount: "+p.tweetTechnology.size());
+		System.out.println("Technology TweetCount: "+tweetCountSports+" Hashcount: "+p.tweetSports.size());
+		
+		br.close();
+
+		bw.close();
 	}
 }
