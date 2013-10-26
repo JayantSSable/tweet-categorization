@@ -166,6 +166,18 @@ public class Preprocessor {
 	
 	public static void main(String [] args) throws Exception
 	{
+		
+		
+		/* gathering Politics tweets*/
+		SearchTweetsPolitics.search();
+		
+		/* gathering Sports tweets*/
+
+		SearchTweetsSports.search();
+		
+		/* gathering Technology tweets*/
+		SearchTweetsTechnology.search();
+		
 		File file = new File("training.txt");
 		if (!file.exists()) {
 			file.createNewFile();
