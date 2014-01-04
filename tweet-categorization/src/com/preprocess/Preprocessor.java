@@ -4,12 +4,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-
 public class Preprocessor {
 	
+	public static int tweetCountPoliticsFinal;
+	public static int tweetCountSportsFinal;
+	public static int tweetCountTechnologyFinal;
+	public static int tweetCountTotalFinal;
 	public Map <String , Integer> tweetPolitcs = new HashMap <String , Integer>();
 	public Map <String , Integer> tweetSports = new HashMap <String , Integer>();
 	public Map <String , Integer> tweetTechnology = new HashMap <String , Integer>();
@@ -164,19 +168,19 @@ public class Preprocessor {
 		return res;
 	}
 	
-	public static void main(String [] args) throws Exception
+	public void callPreprocessor() throws IOException
 	{
 		
 		
 		/* gathering Politics tweets*/
-		SearchTweetsPolitics.search();
+		//SearchTweetsPolitics.search();
 		
 		/* gathering Sports tweets*/
 
-		SearchTweetsSports.search();
+		//SearchTweetsSports.search();
 		
 		/* gathering Technology tweets*/
-		SearchTweetsTechnology.search();
+		//SearchTweetsTechnology.search();
 		
 		File file = new File("training.txt");
 		if (!file.exists()) {
@@ -318,7 +322,10 @@ public class Preprocessor {
 		System.out.println("Politics TweetCount: "+tweetCountPolitics+" Hashcount: "+p.tweetPolitcs.size());
 		System.out.println("Sports TweetCount: "+tweetCountTechnology+" Hashcount: "+p.tweetTechnology.size());
 		System.out.println("Technology TweetCount: "+tweetCountSports+" Hashcount: "+p.tweetSports.size());
-		
+		tweetCountPoliticsFinal = p.tweetPolitcs.size();
+		tweetCountSportsFinal = p.tweetSports.size();
+		tweetCountTechnologyFinal = p.tweetTechnology.size();
+		tweetCountTotalFinal = tweetCountPoliticsFinal+tweetCountSportsFinal+tweetCountTechnologyFinal;
 		br.close();
 
 		bw.close();
