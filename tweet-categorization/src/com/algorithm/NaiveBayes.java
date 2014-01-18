@@ -203,7 +203,7 @@ public class NaiveBayes {
 		System.out.println("Politics Unique Count: "+politicsCnt+"\n");
 		System.out.println("Technology Unique Count: "+technologyCnt+"\n");
 		
-		double sportsProbablity = 0.0, politicsProbablity = 0.0, technologyProbablity = 0.0;
+		double sportsProbablity = 1.0, politicsProbablity = 1.0, technologyProbablity = 1.0;
 		Scanner sc = new Scanner(System.in);
 		String inp = sc.nextLine();
 		StringTokenizer token = new StringTokenizer(inp);		
@@ -212,14 +212,14 @@ public class NaiveBayes {
 			String str = (String) token.nextElement();
 			str = str.trim();
 			str = str.toLowerCase();
-			sportsProbablity += NB.calculateLikelihoodProbSports(str);
+			sportsProbablity = (double)((double)sportsProbablity * (double) NB.calculateLikelihoodProbSports(str));
 			//System.out.println(sportsProbablity+"\n");
-			politicsProbablity += NB.calculateLikelihoodProbTechnology(str);
-			technologyProbablity += NB.calculateLikelihoodProbPolitics(str);
+			politicsProbablity = (double)((double)politicsProbablity * (double) NB.calculateLikelihoodProbPolitics(str));
+			technologyProbablity = (double)((double)technologyProbablity * (double) NB.calculateLikelihoodProbTechnology(str));
 		}
-		sportsProbablity = (double)((double) (sportsProbablity) + (double) (NB.sportsPrioriProbTweets));
-		politicsProbablity = (double)((double) (politicsProbablity) + (double) (NB.politicsPrioriProbTweets));
-		technologyProbablity = (double) ((double) (technologyProbablity) + (double) (NB.technologyPrioriProbTweets));
+		sportsProbablity = (double)((double) (sportsProbablity) * (double) (NB.sportsPrioriProbTweets));
+		politicsProbablity = (double)((double) (politicsProbablity) * (double) (NB.politicsPrioriProbTweets));
+		technologyProbablity = (double) ((double) (technologyProbablity) * (double) (NB.technologyPrioriProbTweets));
 		
 		System.out.println("Sports Probablity: "+sportsProbablity+"\n");
 		System.out.println("Politics Probablity: "+politicsProbablity+"\n");		
