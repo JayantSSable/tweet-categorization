@@ -168,6 +168,17 @@ public class Preprocessor {
 		return res;
 	}
 	
+	public String PreprocessLine(String line)
+	{
+		Preprocessor p = new Preprocessor();
+		line = p.removeUsername(line);
+		line = p.removeLinks(line);
+		line = p.removeHash(line);
+		line = p.removeEmoticons(line);
+		line = p.removeStopwords(line);
+		line = p.removeExtra(line);
+		return line;
+	}
 	public void callPreprocessor() throws IOException
 	{
 		
@@ -320,8 +331,8 @@ public class Preprocessor {
 		System.out.println("*****************************************************************************************");
 		
 		System.out.println("Politics TweetCount: "+tweetCountPolitics+" Hashcount: "+p.tweetPolitcs.size());
-		System.out.println("Sports TweetCount: "+tweetCountTechnology+" Hashcount: "+p.tweetTechnology.size());
-		System.out.println("Technology TweetCount: "+tweetCountSports+" Hashcount: "+p.tweetSports.size());
+		System.out.println("Sports TweetCount: "+tweetCountSports+" Hashcount: "+p.tweetSports.size());
+		System.out.println("Technology TweetCount: "+tweetCountTechnology+" Hashcount: "+p.tweetTechnology.size());
 		tweetCountPoliticsFinal = p.tweetPolitcs.size();
 		tweetCountSportsFinal = p.tweetSports.size();
 		tweetCountTechnologyFinal = p.tweetTechnology.size();

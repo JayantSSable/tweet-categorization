@@ -184,7 +184,7 @@ public class NaiveBayes {
 		NB.callNaiveBayes();
 		NB.calculatePrioriProb();
 		int sportsCnt = 0, technologyCnt = 0 , politicsCnt = 0;
-		
+		Preprocessor tweet = new Preprocessor();
 		for(String Key : sportsHash.keySet())
 		{
 			System.out.println(Key+" -> "+sportsHash.get(Key)+"\n");
@@ -210,6 +210,8 @@ public class NaiveBayes {
 		double sportsProbablity = 0.0, politicsProbablity = 0.0, technologyProbablity = 0.0;
 		Scanner sc = new Scanner(System.in);
 		String inp = sc.nextLine();
+		inp = tweet.PreprocessLine(inp);
+		System.out.println(inp+"\n");
 		StringTokenizer token = new StringTokenizer(inp);		
 		while(token.hasMoreElements())
 		{
