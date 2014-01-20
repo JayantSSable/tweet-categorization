@@ -168,17 +168,27 @@ public class Preprocessor {
 		return res;
 	}
 	
-	public String PreprocessLine(String line)
+	public String PreprocessLine(String line) throws IOException
 	{
 		Preprocessor p = new Preprocessor();
+		File stop = new File("stop.txt");
+		FileReader st = new FileReader(stop);
+		BufferedReader br1 = new BufferedReader(st);
+		String word;
+		while((word = br1.readLine()) != null)
+		{
+			p.stopword.put(word, 1);
+		}
+		br1.close();
 		line = p.removeUsername(line);
 		line = p.removeLinks(line);
 		line = p.removeHash(line);
 		line = p.removeEmoticons(line);
-		line = p.removeStopwords(line);
 		line = p.removeExtra(line);
+		line = p.removeStopwords(line);
 		return line;
 	}
+	
 	public void callPreprocessor() throws IOException
 	{
 		
@@ -231,8 +241,8 @@ public class Preprocessor {
 			line = p.removeLinks(line);
 			line = p.removeHash(line);
 			line = p.removeEmoticons(line);
-			line = p.removeStopwords(line);
 			line = p.removeExtra(line);
+			line = p.removeStopwords(line);
 			if(!line.startsWith("RT"))
 			{
 				p.tweetPolitcs.put(line,1);
@@ -244,14 +254,14 @@ public class Preprocessor {
 		 */
 			
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		for(String key : p.tweetPolitcs.keySet())
 		{
 			String str = "politics\t"+key+"\n";
 			bw.write(str);
-			System.out.println("politics"+"\t"+key);
+			//System.out.println("politics"+"\t"+key);
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		
 		br.close();
 		/*
@@ -281,14 +291,14 @@ public class Preprocessor {
 		 */
 			
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		for(String key : p.tweetSports.keySet())
 		{
 			String str = "sports\t\t"+key+"\n";
 			bw.write(str);
-			System.out.println("sports"+"\t\t"+key);
+			//System.out.println("sports"+"\t\t"+key);
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		
 		br.close();
 		
@@ -321,14 +331,14 @@ public class Preprocessor {
 		 */
 			
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		for(String key : p.tweetTechnology.keySet())
 		{
 			String str = "technology\t"+key+"\n";
 			bw.write(str);
-			System.out.println("technology"+"\t"+key);
+			//System.out.println("technology"+"\t"+key);
 		}
-		System.out.println("*****************************************************************************************");
+		//System.out.println("*****************************************************************************************");
 		
 		System.out.println("Politics TweetCount: "+tweetCountPolitics+" Hashcount: "+p.tweetPolitcs.size());
 		System.out.println("Sports TweetCount: "+tweetCountSports+" Hashcount: "+p.tweetSports.size());

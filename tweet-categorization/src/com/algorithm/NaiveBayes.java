@@ -7,7 +7,6 @@ import com.preprocess.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 public class NaiveBayes {
 	
@@ -174,88 +173,5 @@ public class NaiveBayes {
 			ret = Math.log(ret);
 			return ret;
 			}
-	}
-
-	
-	
-	public static void main(String args[]) throws IOException
-	{
-		NaiveBayes NB = new NaiveBayes();
-		NB.callNaiveBayes();
-		NB.calculatePrioriProb();
-		int sportsCnt = 0, technologyCnt = 0 , politicsCnt = 0;
-		Preprocessor tweet = new Preprocessor();
-		for(String Key : sportsHash.keySet())
-		{
-			System.out.println(Key+" -> "+sportsHash.get(Key)+"\n");
-			sportsCnt++;
-		}
-		
-		for(String Key : technologyHash.keySet())
-		{
-			System.out.println(Key+" -> "+technologyHash.get(Key)+"\n");
-			technologyCnt++;
-		}
-		
-		for(String Key : politicsHash.keySet())
-		{
-			System.out.println(Key+" -> "+politicsHash.get(Key)+"\n");
-			politicsCnt++;
-		}
-		
-		System.out.println("Sports Unique Count: "+sportsCnt+"\n");
-		System.out.println("Politics Unique Count: "+politicsCnt+"\n");
-		System.out.println("Technology Unique Count: "+technologyCnt+"\n");
-		
-		double sportsProbablity = 0.0, politicsProbablity = 0.0, technologyProbablity = 0.0;
-		Scanner sc = new Scanner(System.in);
-		String inp = sc.nextLine();
-		inp = tweet.PreprocessLine(inp);
-		System.out.println(inp+"\n");
-		StringTokenizer token = new StringTokenizer(inp);		
-		while(token.hasMoreElements())
-		{
-			String str = (String) token.nextElement();
-			str = str.trim();
-			str = str.toLowerCase();
-			sportsProbablity += NB.calculateLikelihoodProbSports(str);
-			politicsProbablity += NB.calculateLikelihoodProbPolitics(str);
-			technologyProbablity += NB.calculateLikelihoodProbTechnology(str);
-			System.out.println(sportsProbablity+" "+politicsProbablity+" "+technologyProbablity+"\n");
-		}
-		sportsProbablity += Math.log((double) (NB.sportsPrioriProbTweets));
-		politicsProbablity += Math.log((double) (NB.politicsPrioriProbTweets));
-		technologyProbablity += Math.log((double) (NB.technologyPrioriProbTweets));
-		
-		System.out.println("Sports Probablity: "+sportsProbablity+"\n");
-		System.out.println("Politics Probablity: "+politicsProbablity+"\n");		
-		System.out.println("Technology Probablity: "+technologyProbablity+"\n");
-		
-		String ANSWER = "";
-		
-		if(sportsProbablity > politicsProbablity)
-		{
-			if(sportsProbablity > technologyProbablity)
-			{
-				ANSWER = "SPORTS!!!!!";
-			}
-			else
-			{
-				ANSWER = "TECHNOLOGY!!!!!";
-			}
-		}
-		else
-		{
-			if(politicsProbablity > technologyProbablity)
-			{
-				ANSWER = "POLITICS!!!!";
-			}
-			else
-			{
-				ANSWER = "TECHNOLOGY!!!!";
-			}
-		}
-		System.out.println("Tweet Belongs to "+ANSWER+" Category! Happy New Year!");
-		sc.close();	
 	}
 }
